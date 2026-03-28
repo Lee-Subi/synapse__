@@ -1,0 +1,8 @@
+src/**
+node_modules/**
+.vscode/**
+*.ts
+tsconfig.json
+webpack.config.js
+tailwind.config.js
+postcss.config.js

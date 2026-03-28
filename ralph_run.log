@@ -1,0 +1,17 @@
+=== 이터레이션 1 / 2026-03-28 12:22:16 ===
+전체 Context Tree VS Code 확장이 구현되었고 빌드가 성공했습니다.
+
+## PROGRESS
+- [완료] Phase 0 - 프로젝트 스캐폴딩: package.json, tsconfig, webpack, tailwind, postcss 설정
+- [완료] Phase 1 - Extension Host: VS Code 확장 호스트 + 전체 메시지 브리지 (파일 읽기/쓰기, 터미널, 검색 포함)
+- [완료] Phase 2 - 데이터 레이어: types.ts (전체 스키마) + vscodeApi.ts (브리지 래퍼) + useStore.ts (Zustand 스토어)
+- [완료] Phase 3 - 그래프 캔버스: ContextNodeCard (역할별 색상/아이콘) + GraphCanvas (React Flow + 툴바)
+- [완료] Phase 4 - LLM 클라이언트: OpenAI/Anthropic 스트리밍 + 도구 호출 루프 + SettingsPanel
+- [완료] Phase 5 - ChatPanel: 소크라틱 인터뷰 + 에이전트 채팅 + Lock Spec + Sync + 롤백 (인라인 확인)
+- [완료] Phase 6 - MetadataEditor + MergePanel + mergerLogic: Compiler AI 머지 전체 구현
+- [완료] Phase 7 - 고급 기능: AgentToolExecutor (4개 도구), 부모 컨텍스트 브로드캐스트, 파일 자동 발견, linked_files 자동 읽기
+- [완료] 빌드 테스트: webpack 빌드 성공 (extension.js + webview.js)
+## END_PROGRESS
+
+<promise>COMPLETE</promise>
+

@@ -1,0 +1,48 @@
+# Ralph Loop 진행 상황
+시작: 2026-03-28 12:22:16
+
+## 완료된 작업
+
+### Collect & run (에이전트 산출물 → npm) (2026-03-28)
+- extension: `aggregateAgentFiles` 공통화, `findPackageJsonDir` + `launchNpmProductInTree` — 통합 폴더에서 첫 유효 `package.json` 탐색 후 터미널에서 `npm install && npm run dev|start|serve|preview`
+- 메시지: `REQUEST_COLLECT_AND_RUN`, `REQUEST_RUN_PRODUCT` + 웹뷰 `requestCollectAndRun` / `requestRunProduct`
+- GraphCanvas: **▶ Collect & run**, **▶ Run product** 버튼 추가
+
+### 소크라틱 시작 질문 + Lock Spec UX (2026-03-28)
+- 역할별 기본 오프닝 질문: `llmClient`에 `DEFAULT_SOCRATIC_OPENINGS` + `createDefaultSocraticOpening`, 신규 노드 `addNode` 시 `chatHistory`에 즉시 시드; 예전 DB의 빈 draft는 ChatPanel 마운트 시 동일 시드
+- LLM 자동 부트스트랩 제거 (API 키 없으면 메시지 0건·채팅 공백이 되던 문제); `alert` 대신 인라인 배너 + `showError` (웹뷰에서 네이티브 alert 비신뢰, PRD 8.1)
+- Lock Spec: `chatHistory.length < 2` 대신 **사용자 메시지 ≥ 1**일 때 활성화 + `title` 툴팁; API 키 없을 때 클릭 시 안내
+
+### 노드별 채팅 / 히스토리 수정 (2026-03-28)
+- ChatPanel `handleSendMessage`: `appendChatMessage` 직후 렌더 시점의 `node`는 오래된 스냅샷이라, 새 사용자 메시지가 LLM 요청에 포함되지 않던 버그 수정 (`useStore.getState()`로 최신 노드 사용, 스트리밍용 빈 assistant 메시지는 API 페이로드에서 제외)
+
+### Phase 0-6: 전체 프로젝트 구현 완료 (2026-03-28)
+- package.json, tsconfig.json, webpack.config.js, tailwind/postcss 설정
+- src/extension.ts: VS Code 확장 호스트 (전체 메시지 브리지 + 파일시스템 + 터미널 + 검색)
+- src/webview/types.ts: 모든 TypeScript 인터페이스 + FILESYSTEM_TOOLS (4개 도구)
+- src/webview/utils/vscodeApi.ts: VS Code API 래퍼 (30초 타임아웃 브리지)
+- src/webview/store/useStore.ts: Zustand 스토어 (전체 CRUD + fork + rollback + merge)
+- src/webview/utils/llmClient.ts: OpenAI + Anthropic 스트리밍 + 도구 호출 루프 (MAX_TOOL_ROUNDS=8)
+- src/webview/utils/mergerLogic.ts: Compiler AI 머지 로직
+- src/webview/components/GraphCanvas.tsx: React Flow 캔버스 + 툴바
+- src/webview/components/ContextNodeCard.tsx: 커스텀 노드 카드 (역할별 색상)
+- src/webview/components/ChatPanel.tsx: 소크라틱 인터뷰 + 에이전트 채팅 + 스펙 잠금/동기화 + 롤백
+- src/webview/components/MetadataEditor.tsx: 스펙 수동 편집 + 위험 영역
+- src/webview/components/MergePanel.tsx: Compiler AI 머지 UI
+- src/webview/components/SettingsPanel.tsx: LLM 제공자/키/모델 설정
+- src/webview/App.tsx: 레이아웃 (그래프 캔버스 + 탭 사이드바)
+- src/webview/index.tsx: React 진입점
+- 빌드 성공: extension.js + webview.js 생성 확인
+## PROGRESS
+- [완료] 노드별 채팅 히스토리: ChatPanel에서 스토어 갱신 후 최신 `chatHistory`로 LLM 메시지 구성 (스테일 클로저 버그 수정)
+- [완료] Phase 0 - 프로젝트 스캐폴딩: package.json, tsconfig, webpack, tailwind, postcss 설정
+- [완료] Phase 1 - Extension Host: VS Code 확장 호스트 + 전체 메시지 브리지 (파일 읽기/쓰기, 터미널, 검색 포함)
+- [완료] Phase 2 - 데이터 레이어: types.ts (전체 스키마) + vscodeApi.ts (브리지 래퍼) + useStore.ts (Zustand 스토어)
+- [완료] Phase 3 - 그래프 캔버스: ContextNodeCard (역할별 색상/아이콘) + GraphCanvas (React Flow + 툴바)
+- [완료] Phase 4 - LLM 클라이언트: OpenAI/Anthropic 스트리밍 + 도구 호출 루프 + SettingsPanel
+- [완료] Phase 5 - ChatPanel: 소크라틱 인터뷰 + 에이전트 채팅 + Lock Spec + Sync + 롤백 (인라인 확인)
+- [완료] Phase 6 - MetadataEditor + MergePanel + mergerLogic: Compiler AI 머지 전체 구현
+- [완료] Phase 7 - 고급 기능: AgentToolExecutor (4개 도구), 부모 컨텍스트 브로드캐스트, 파일 자동 발견, linked_files 자동 읽기
+- [완료] 빌드 테스트: webpack 빌드 성공 (extension.js + webview.js)
+## END_PROGRESS
+--- 이터레이션 1 완료: 2026-03-28 12:22:16 ---
